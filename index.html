@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>内容账号数据运营 Agent｜交互式 Demo</title>
+<meta name="description" content="抖音/小红书内容数据全自动管理 Agent 的交互式演示。支持单条作品入库、每日同步、日报周报、数据存档。本页面为纯前端模拟演示，不接入真实数据。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <div class="badge">🤖 Hermes Agent · 交互式 Demo</div>
+  <h1>内容账号数据运营 Agent</h1>
+  <p class="sub">抖音/小红书内容数据全自动管理：群里发一条分享链接，自动抓取、判断归属、分流入库；每天自动同步并推送日报，每周一出周报对比分析。</p>
+  <div class="hint">👇 试着在下方输入框贴一条分享口令，或点击示例链接，体验完整入库流程（<code>纯前端模拟，不接真实数据</code>）</div>
+</div>
+
+<!-- ============ 交互演示 ============ -->
+<div class="section">
+  <div class="container">
+    <div class="demo-box">
+      <div class="demo-head">
+        <span class="led on"></span>
+        <span>内容账号数据运营 Agent · 在线</span>
+      </div>
+      <div class="chat" id="chat"></div>
+      <div class="demo-input">
+        <input id="input" type="text" placeholder="粘贴抖音/小红书分享口令，如：8.43 复制打开抖音... v.douyin.com/xxx" autocomplete="off">
+        <button id="send">发送</button>
+      </div>
+      <div class="samples">
+        <div class="lbl">点击试试（示例口令）：</div>
+        <div class="chips">
+          <span class="chip" data-sample="dy1">抖音 · 对标账号</span>
+          <span class="chip" data-sample="dy2">抖音 · 自家账号</span>
+          <span class="chip" data-sample="xhs1">小红书 · 自家账号</span>
+          <span class="chip" data-sample="bad">无效链接</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 功能矩阵 ============ -->
+<div class="section alt">
+  <div class="container">
+    <h2><span class="dot">◆</span> 核心功能</h2>
+    <div class="desc">一条消息、一套定时任务，覆盖内容账号数据全链路。</div>
+    <div class="grid">
+      <div class="fcard"><div class="ic">🔗</div><h3>单条作品入库</h3><p>群里发抖音/小红书分享链接，自动识别平台、抓取详情、判断作者归属，分流写入对应表格。</p><div class="meta">触发：群消息</div></div>
+      <div class="fcard"><div class="ic">🔄</div><h3>每日账号同步</h3><p>自动拉取全部账号最新作品，新增补播放量入库，老作品刷新互动数据。</p><div class="meta">触发：每天 08:30</div></div>
+      <div class="fcard"><div class="ic">📊</div><h3>每日日报</h3><p>汇总昨日发布作品，按负责人分组推送，标题带可点击链接和互动数据。</p><div class="meta">触发：每天 08:30</div></div>
+      <div class="fcard"><div class="ic">📈</div><h3>周一周报</h3><p>分平台整体、负责人累计、全局三维度对比上周，附本周亮点 TOP3。</p><div class="meta">触发：周一 08:35</div></div>
+      <div class="fcard"><div class="ic">🏷️</div><h3>账号数据更新</h3><p>每周刷新粉丝数/总获赞/作品数并保存快照，跟踪账号增长趋势。</p><div class="meta">触发：周一 08:35</div></div>
+      <div class="fcard"><div class="ic">🗄️</div><h3>多端存档</h3><p>日报周报自动追加到云端文档，历史数据存本地数据库，查档分析不消耗 API 额度。</p><div class="meta">触发：每次运行</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 工作流 ============ -->
+<div class="section">
+  <div class="container">
+    <h2><span class="dot">◆</span> 工作流（SOP）</h2>
+    <div class="desc">单条作品入库的标准流程：识别 → 抓取 → 判断 → 分流 → 查重 → 写入 → 回报。</div>
+    <div class="flow">
+      <div class="flow-step"><div class="num">1</div><div class="body"><h4>平台识别</h4><p>只看链接域名：v.douyin.com → 抖音；xhslink.com / xiaohongshu.com → 小红书；都不是则停下询问。</p></div></div>
+      <div class="flow-step"><div class="num">2</div><div class="body"><h4>抓取作品详情</h4><p>调用数据接口获取作品标题、作者、点赞/收藏/评论/分享、发布时间等。可整段吞下分享口令，无需手动抠 URL。</p></div></div>
+      <div class="flow-step"><div class="num">3</div><div class="body"><h4>作者归属判断</h4><p>提取作者稳定标识（sec_uid / 抖音号），与账号表精确比对，绝不用昵称判断。</p></div></div>
+      <div class="decision">🔀 命中账号表 → 自家账号；未命中 → 对标账号</div>
+      <div class="flow-step"><div class="num">4</div><div class="body"><h4>分流写入</h4><p>自家账号 → 作品数据表（带关联账号）；对标账号 → 对标素材表（纯文本记录）。</p></div></div>
+      <div class="flow-step"><div class="num">5</div><div class="body"><h4>查重</h4><p>用作品 ID 查目标表：已存在 → 更新互动数据；不存在 → 新建记录。</p></div></div>
+      <div class="flow-step"><div class="num">6</div><div class="body"><h4>回报结果</h4><p>一句话说明三件事：进了哪张表、是否自家号、新增还是更新。</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 判断规则 ============ -->
+<div class="section alt">
+  <div class="container">
+    <h2><span class="dot">◆</span> 核心判断规则</h2>
+    <div class="desc">Agent 在关键节点如何做决策。</div>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>场景</th><th>规则</th></tr>
+      <tr><td>消息里只有分享链接</td><td>直接入库，不反问</td></tr>
+      <tr><td>链接 + 在问问题</td><td>先答问题，顺带问要不要入库</td></tr>
+      <tr><td>用户有明确其他意图</td><td>按用户说的做，不写库</td></tr>
+      <tr><td>一条消息多个链接</td><td>逐条处理、逐条回报</td></tr>
+      <tr><td>B站/视频号/YouTube 链接</td><td>明确告知不支持，不硬塞</td></tr>
+      <tr><td>新增作品（抖音）</td><td>必补播放量（列表接口恒为 0）</td></tr>
+      <tr><td>老作品</td><td>不刷播放量；点赞增长 ≥30 才补一次（省 API 额度）</td></tr>
+      <tr><td>小红书播放量</td><td>平台不开放，恒为 0，不显示不处理</td></tr>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 能力边界 ============ -->
+<div class="section">
+  <div class="container">
+    <h2><span class="dot">◆</span> 能力边界</h2>
+    <div class="desc">什么能做、什么不做、什么时候需要人。</div>
+    <div class="boundary">
+      <div class="col yes"><h3>✅ 擅长的事</h3>
+        <ul>
+          <li>抖音/小红书分享链接自动入库与分流</li>
+          <li>多账号每日增量同步与数据刷新</li>
+          <li>日报/周报自动生成与多端推送</li>
+          <li>账号粉丝/获赞/作品数周度跟踪</li>
+          <li>历史数据本地存档与查档</li>
+        </ul>
+      </div>
+      <div class="col no"><h3>❌ 不做的事</h3>
+        <ul>
+          <li>YouTube 下载与语音转写（已下线）</li>
+          <li>小红书播放量（平台不开放）</li>
+          <li>B站/视频号等非抖音小红书平台</li>
+          <li>翻页拉取全量历史作品（省额度）</li>
+          <li>批量刷新老作品播放量（按次计费）</li>
+        </ul>
+      </div>
+      <div class="col manual"><h3>✋ 需要人工介入</h3>
+        <ul>
+          <li>凭证缺失（API Key / 应用权限）需重新配置</li>
+          <li>链接平台识别不出 → Agent 会停下询问</li>
+          <li>对标账号需长期跟踪 → 人工加入账号表</li>
+          <li>周报数据异常 → 人工核对表格</li>
+          <li>批量补历史数据 → 需单独写一次性脚本</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 输出样例 ============ -->
+<div class="section alt">
+  <div class="container">
+    <h2><span class="dot">◆</span> 真实输出样例</h2>
+    <div class="desc">以下为运行时的真实输出格式（数据已脱敏）。</div>
+
+    <div class="sample-block"><span class="hl">✅</span> 对标素材表 | 非自家号「<span class="hl2">某某账号</span>」| 新增 | 赞 14,070 | 总耗时 13.76s
+<span class="hl">✅</span> 作品数据表 | 自家号「<span class="hl2">某某账号</span>」| 新增 | 赞 29 | 总耗时 13.76s
+<span class="hl">✅</span> 对标素材表 | 非自家号「<span class="hl2">某某账号</span>」| 已存在，已收录过 | 总耗时 7.93s</div>
+
+    <div class="sample-block">📊 账号作品日报 08-16
+
+👤 负责人A
+抖音新增 2｜小红书新增 1
+1. 抖音 [每天认识一个神奇网站](https://www.douyin.com/video/示例ID)｜账号名｜赞93 藏94 评1 分享15 播4186
+2. 小红书 [宝藏工具第5期](https://www.xiaohongshu.com/explore/示例ID)｜账号名｜赞38 藏82 评0 分享4</div>
+
+    <div class="sample-block">📊 账号作品周汇总 08-10 ~ 08-16（对比 08-03 ~ 08-09）
+
+【平台整体】
+抖音：37 条（上周 15）｜赞 3,154（-1,164）｜藏 2,252（-2,557）
+小红书：22 条（上周 3）｜赞 432（+429）｜藏 781（+769）
+
+【全局】
+作品 59 条（+41）｜赞 3,586（-735）｜藏 3,033（-1,788）
+
+📈 本周亮点 TOP3
+🔥 抖音 [本周最佳作品](链接)｜赞357</div>
+  </div>
+</div>
+
+<!-- ============ Footer ============ -->
+<footer>
+  <div class="warn">⚠️ 本页面为纯前端交互演示，所有响应来自本地模拟数据，不接入任何真实 API、不读取任何真实账号数据，访问者无法触发真实入库。</div>
+  <div>内容账号数据运营 Agent · 交互式 Demo · Hermes 驱动</div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
